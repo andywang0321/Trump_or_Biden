@@ -68,17 +68,21 @@ def solver(
         for step, train_loss in train(
             model, train_dataloader, loss_fn, optimizer
         ):
-            eval_loss = eval(model, eval_dataloader, loss_fn)
-            # logging
-            eval_loss_history.append(eval_loss)
-            train_loss_history.append(train_loss)
-            # printing
-            if verbose and (step % print_every == 0):
-                print(
-                    f'Epoch: {epoch+1}/{epochs},',
-                    f'Step: {step+1}/{len_train_dataloader},',
-                    f'Validation Loss: {train_loss:.5f}'
-                )
+            if eval_dataloader is not None:
+                eval_loss = eval(model, eval_dataloader, loss_fn)
+                # logging
+                eval_loss_history.append(eval_loss)
+                train_loss_history.append(train_loss)
+                # printing
+                if verbose and (step % print_every == 0):
+                    print(
+                        f'Epoch: {epoch+1}/{epochs},',
+                        f'Step: {step+1}/{len_train_dataloader},',
+                        f'Validation Loss: {train_loss:.5f}'
+                    )
+            else:
+                eval_loss_history = None
+                train_loss_history.append(train_loss)
             # # saving
             # if step % config.save_iterations == 0:
             #     save_model
