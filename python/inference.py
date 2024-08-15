@@ -46,7 +46,7 @@ with open('knn.pkl', 'rb') as f:
 # inference
 
 # load test data
-test_path = "../../ucla-stats-101-c-2024-summer-classification/test_class.csv"
+test_path = "test_class.csv"
 test_csv = pd.read_csv(test_path)
 # drop non-feature columns
 test_ids = test_csv.id
@@ -72,6 +72,6 @@ predictions = pd.DataFrame.from_dict(predictions)
 predictions['winner'] = predictions[['nn', 'xgb', 'svm', 'rf', 'knn']].mode(axis=1)
 predictions['winner'] = predictions['winner'].apply(num2prez)
 predictions[['id', 'winner']].to_csv(
-    f'../preds/preds_final_ensemble_andy_0802.csv',
+    f'submission.csv',
     index=False
 )
